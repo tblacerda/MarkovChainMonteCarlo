@@ -1,0 +1,8 @@
+ parameter  mean std_dev hdi_interval mes
+  <chr>     <dbl>   <dbl> <glue>
+mu_anf    0.469   0.024 [0.421, 0.513]  out/24
+mu_anf    0.407   0.024 [0.359, 0.453]  nov/24
+mu_anf    0.420   0.024 [0.374, 0.468]  dez/24
+mu_anf    0.465   0.025 [0.417, 0.514]  jan/25
+mu_anf    0.425   0.025 [0.38, 0.476]   fev/25
+mu_anf    0.427   0.024 [0.38, 0.474]   mar/25

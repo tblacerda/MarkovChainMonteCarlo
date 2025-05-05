@@ -1,0 +1,32 @@
+\[Acesso] - Extração Base Rollout Acesso 21-04-2025.xlsx
+Código PyMC e Modelagem Bayesiana_.docx
+ecq.zip
+consolidado_83.xlsx
+Detalhamento por Município.xlsx
+ECQ_FEV25.csv
+ECQ_FEV25.xlsx
+priorizacao_sites_ECQ_final.xlsx
+priorizacao_sites_ECQ_revisado.xlsx
+priorizacao_sites_ECQ.xlsx
+resultado_impacto_sites.xlsx
+resumo_municipios_sites.xlsx
+summary_ECQ_normal.xlsx
+Trial Ajustes Forçados Testes IA -UFF_Rev1.pptx
+_RESULTADO/priorizacao_sites_ECQ_dez24.xlsx
+_RESULTADO/priorizacao_sites_ECQ_fev25.xlsx
+_RESULTADO/priorizacao_sites_ECQ_jan25.xlsx
+_RESULTADO/priorizacao_sites_ECQ_mar25.xlsx
+_RESULTADO/priorizacao_sites_ECQ_nov24.xlsx
+_RESULTADO/priorizacao_sites_ECQ_out24.xlsx
+ANALISE 83 ECQ/analiseECQ83.zip
+ANALISE 83 ECQ/Peso da medida Selecionada por EndID no contexto filtrado (15).xlsx
+ANALISE 83 ECQ/priorizacao_sites_ECQ_final_83.xlsx
+ANALISE 83 ECQ/Resumo_plano_upside_TNE_v8.xlsx
+ANALISE 83 ECQ/analiseECQ83/ATIVACOES.xlsx
+*.xlsx
+# Ignora arquivos .xlsx em um subdiretório específico
+_RESULTADO/*.xlsx
+ANALISE 83 ECQ/*.xlsx
+DADOS BRUTOS/*.xlsx
+
+
