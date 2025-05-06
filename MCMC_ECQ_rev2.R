@@ -10,7 +10,7 @@ library(tidyverse)
 
 
 # Carregar e filtrar dados
-data <- read_excel("DADOS BRUTOS/ECQ_OUT_24.xlsx", sheet = "Export") %>%
+data <- read_excel("DADOS BRUTOS/ECQ_ABR_25.xlsx", sheet = "Export") %>%
   filter(ANF == 83) %>%
   mutate(TESTES_ECQ_OK = round(TESTES_ECQ * ECQ, 0))  # Recriar a variável resposta
 
@@ -37,8 +37,8 @@ jags_data <- list(
 model_string <- "
 model {
   # Hiperparâmetros globais
-  mu_global ~ dbeta(2, 2)
-  sigma_global ~ dgamma(2, 0.1)  # Prior Gamma mais informativa
+  mu_global ~ dbeta(3, 3)
+  sigma_global ~ dgamma(2, 0.5)  # Prior Gamma mais informativa
 
   # Parâmetros ANF com restrição
   alpha_anf <- mu_global * sigma_global + 0.1  # Evitar alpha/beta <= 0
@@ -46,8 +46,8 @@ model {
   mu_anf ~ dbeta(alpha_anf, beta_anf)
 
   # Priors para dispersão
-  phi_municipio ~ dgamma(2, 0.1)  # Gamma mais suave
-  phi_site ~ dgamma(2, 0.1)
+  phi_municipio ~ dgamma(2, 0.9)  # Gamma mais suave
+  phi_site ~ dgamma(2, 2)
 
   # Loop por municípios
   for(g in 1:N_group) {
@@ -66,16 +66,18 @@ model {
   }
 }
 "
+
+
 inits <- function() {
   list(
-    mu_global = rbeta(1, 2, 2),
-    sigma_global = rgamma(1, 2, 0.1),  # Coerente com o prior
-    phi_municipio = rgamma(1, 2, 0.1),
-    phi_site = rgamma(1, 2, 0.1),
+    mu_global = rbeta(1, 3, 3),
+    sigma_global = rgamma(1, 2, 0.5),  # Coerente com o prior
+    phi_municipio = rgamma(1, 2, 2),
+    phi_site = rgamma(1, 2, 2),
     mu_anf = rbeta(1, 2, 2)  # Inicialização direta
+    
   )
 }
-
 
 model <- jags.model(
   textConnection(model_string),
@@ -95,15 +97,13 @@ samples <- coda.samples(
 # Verificar convergência
 gelman.diag(samples)
 effectiveSize(samples)
-#traceplot(samples)
+traceplot(samples)
 raftery.diag(samples) #para saber a quantidade de samples 
 
 # Analisar resultados
 summary(samples)
 
 #Analise 
-
-
 # 1. Mapear group_id para ANF e Município
 group_map <- data %>%
   distinct(group_id, ANF, MUNICIPIO)
@@ -156,7 +156,7 @@ final_df <- data %>%
 
 # 5. Verificar e exportar
 if(nrow(final_df) == nrow(data)) {
-  write_xlsx(final_df, "priorizacao_sites_ECQ_R_OUT24.xlsx")
+  write_xlsx(final_df, "priorizacao_sites_ECQ_R_ABR25.xlsx")
   message("Arquivo exportado com sucesso!")
 } else {
   warning("Verificar correspondência entre índices e dados!")
