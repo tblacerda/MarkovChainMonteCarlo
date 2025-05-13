@@ -10,7 +10,7 @@ library(tidyverse)
 
 
 # Carregar e filtrar dados
-data <- read_excel("DADOS BRUTOS/ECQ_ABR_25.xlsx", sheet = "Export") %>%
+data <- read_excel("DADOS BRUTOS/ECQ_MAI_25_PARCIAL.xlsx", sheet = "Export") %>%
   filter(ANF == 83) %>%
   mutate(TESTES_ECQ_OK = round(TESTES_ECQ * ECQ, 0))  # Recriar a variável resposta
 
@@ -156,7 +156,7 @@ final_df <- data %>%
 
 # 5. Verificar e exportar
 if(nrow(final_df) == nrow(data)) {
-  write_xlsx(final_df, "priorizacao_sites_ECQ_R_ABR25.xlsx")
+  write_xlsx(final_df, "priorizacao_sites_ECQ_R_MAI25.xlsx")
   message("Arquivo exportado com sucesso!")
 } else {
   warning("Verificar correspondência entre índices e dados!")
@@ -198,3 +198,34 @@ mu_anf_formatted
 
 
 dic.samples(model,n.iter = 1e3)
+
+
+
+library(ggplot2)
+library(ggrepel)
+library(dplyr)
+
+# Identificar pontos extremos (maiores valores de TESTES_ECQ e outliers de mean_site)
+extremos <- final_df %>%
+  arrange(desc(TESTES_ECQ), desc(abs(mean_site - median(mean_site)))) %>%
+  head(15) # Seleciona os 5 registros mais extremos
+
+# Criar o scatter plot com labels para extremos
+ggplot(final_df, aes(x = TESTES_ECQ , y = mean_site )) +
+    geom_point(alpha = 0.6, color = "steelblue") +  # Pontos básicos
+  geom_text_repel(
+    data = extremos,
+    aes(label = paste(ENDERECO_ID, MUNICIPIO, sep = ", ")), # Combina ID e Município
+    size = 3,
+    box.padding = 0.5,
+    max.overlaps = 10
+  ) +
+  labs(
+    x = "Testes ECQ",
+    y = "Média do Site (mean_site)",
+    title = "Relação entre Performance de Sites e Testes ECQ",
+    subtitle = "Pontos extremos destacados com labels"
+  ) +
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold"))
+
